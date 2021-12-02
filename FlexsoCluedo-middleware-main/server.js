@@ -165,15 +165,29 @@ function _checkData(currentAnswer){
     let kamerBool = false
     // FIXME: REQUIRED 3
     // Check object with existing (!) check functions. Return value should be true || false
-    if (solution.wapen.name == currentAnswer.wapen.id) {
-          wapenBool = true  
+    if (!isNaN(currentAnswer.wapen.id)) {
+        if (solution.wapen.name == currentAnswer.wapen.name) {
+            wapenBool = true  
+        }
+        if (solution.dader.name == currentAnswer.dader.name) {
+          daderBool = true  
+        }
+        if (solution.kamer.name == currentAnswer.kamer.name) {
+            kamerBool = true  
+        }
     }
-    if (solution.dader.name == currentAnswer.dader.id) {
-        daderBool = true  
-  }
-  if (solution.kamer.name == currentAnswer.kamer.id) {
-    kamerBool = true  
-}
+    else{
+        if (solution.wapen.name == currentAnswer.wapen.id) {
+            wapenBool = true  
+         }
+        if (solution.dader.name == currentAnswer.dader.id) {
+          daderBool = true  
+        }
+        if (solution.kamer.name == currentAnswer.kamer.id) {
+          kamerBool = true  
+        }
+    }
+    
     return {
         
         wapen: wapenBool,

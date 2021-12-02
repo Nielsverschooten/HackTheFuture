@@ -20,6 +20,8 @@ sap.ui.define([
 		var botStatuses = [true, true, true, true];
 		const dataBaseUrl = "https://htf-2021.herokuapp.com";
 		const localBaseUrl = "http://localhost:3000";
+		let cluedoModel;
+
 		return Controller.extend("com.flexso.htf2021.controller.cluedo", {
 			onInit: function () {
 				//FIXME: REQUIRED 1
@@ -29,10 +31,10 @@ sap.ui.define([
 				(async () => {
                     try {
                       const res = await fetch(localBaseUrl + "/data")
-                      const cluedoModel = await res.json()
-                      console.log(cluedoModel);
-					  await this.getView().byId("startImage").setProperty( "src" ,dataBaseUrl+cluedoModel.others[0].url+"").setVisible(true)
-					  await this.getView().byId("grondplanImg").setProperty( "src" ,dataBaseUrl+cluedoModel.grondplannen[1].url+"").setVisible(true)
+                      this.cluedoModel = await res.json()
+                      console.log(this.cluedoModel);
+					  await this.getView().byId("startImage").setProperty( "src" ,dataBaseUrl+this.cluedoModel.others[0].url+"").setVisible(true)
+					  await this.getView().byId("grondplanImg").setProperty( "src" ,dataBaseUrl+this.cluedoModel.grondplannen[1].url+"").setVisible(true)
                     } catch (err) {
                       throw err
                     }
@@ -63,6 +65,7 @@ sap.ui.define([
 				// TODO: BONUS
 				// Read image url from model data. Look up the correct image tag in XML view. Then set the image source.
 				// Tip: do not forget dataBaseUrl!
+				this.getView().byId("wapenImage").setProperty( "src" ,dataBaseUrl+this.cluedoModel.wapens[this.getView().byId("wapen").getSelectedItem().getKey()].url+"").setVisible(true)
 			},
 
 			
@@ -70,6 +73,7 @@ sap.ui.define([
 				// TODO: BONUS
 				// Read image url from model data. Look up the correct image tag in XML view. Then set the image source.
 				// Tip: do not forget dataBaseUrl!
+				this.getView().byId("daderImage").setProperty( "src" ,dataBaseUrl+this.cluedoModel.daders[this.getView().byId("dader").getSelectedItem().getKey()].url+"").setVisible(true)
 			},
 			
 			onValidatePress: function (evt) {
@@ -78,6 +82,10 @@ sap.ui.define([
 
 				// TODO: BONUS
 				// Check if wapen, dader, kamer are selected before going on.
+				if (this.getView().byId("wapen").getSelectedItem()==null || this.getView().byId("dader").getSelectedItem()==null||this.getView().byId("kamer").getValue()=="") {
+					MessageToast.show("please fill in all the fields",{duration: 3000,width:"15rem"});
+					return
+				}
 
 				// FIXME: REQUIRED 3 
 				// check onClick function for every room button
@@ -103,6 +111,7 @@ sap.ui.define([
 						botStatuses: botStatuses
 					}
 				};
+				console.log(oData)
 				if (answer != undefined) {
 					$.ajax({
 						url: localBaseUrl + "/check_answer",
@@ -121,19 +130,28 @@ sap.ui.define([
 						// FIXME: REQUIRED 4
 						// If the player won, show _endOfGameDialog
 						if (oData.checks.player.dader && oData.checks.player.kamer && oData.checks.player.wapen) {
-							this._endOfGameDialog("someone won", "Do you want to restart?")
+							this._endOfGameDialog("player won", "Do you want to restart?")
 						}
 						// KILLER
 						// TODO: BONUS
 						// Check if player died -> show _endOfGameDialog
 						// Make Killer visible on screen
 
-
+						console.log(oData)
 						// BOTS: 
 						//TODO: BONUS
 						// Add bots to playground & display bot guesses
 						// Check if bot died by killer (if killer is active)
 						// Check if bot won -> show _endOfGameDialog
+						for (let botNr = 1; botNr <= amountOfBots; botNr++) {
+							this.getView().byId("bot" + botNr + "HBox").setVisible(true);
+							this._displayBotGuesses(oData,amountOfBots);
+							
+							if (oData.checks.bots[botNr-1].dader && oData.checks.bots[botNr-1].kamer && oData.checks.bots[botNr-1].wapen) {
+								this._endOfGameDialog("one of the bots won", "Do you want to restart?")
+							}
+						}
+						
 						
 					}).catch(() => {
 						MessageToast.show(this.getView().getModel("i18n").getProperty("checkFailed"));
@@ -200,8 +218,8 @@ sap.ui.define([
 					this.getView().byId('kamerIcon').setProperty("src", "sap-icon://decline");
 				}
 			},
-			_displayBotGuesses: function (botData) {
-				for (let i = 0; i < botData.checks.bots.length; i++) {
+			_displayBotGuesses: function (botData, botlength) {
+				for (let i = 0; i < botlength; i++) {
 					if(!botData.statuses.bots[i]){
 						break;
 					}
