@@ -31,7 +31,7 @@ sap.ui.define([
                       const res = await fetch(localBaseUrl + "/data")
                       const cluedoModel = await res.json()
                       console.log(cluedoModel);
-					  await this.getView().byId("startImage").setProperty( "src" ,dataBaseUrl+cluedoModel.others.url+"").setVisible(true)
+					  await this.getView().byId("startImage").setProperty( "src" ,dataBaseUrl+cluedoModel.others[0].url+"").setVisible(true)
 					  await this.getView().byId("grondplanImg").setProperty( "src" ,dataBaseUrl+cluedoModel.grondplannen[1].url+"").setVisible(true)
                     } catch (err) {
                       throw err
@@ -50,8 +50,8 @@ sap.ui.define([
                     const res = await fetch(localBaseUrl + "/new_solution", {method: 'POST'})
                       .then(res => res.json())
                       console.log('Success:', res);
-                      _buildPlayground();
-                      MessageToast();
+                      this._buildPlayground();
+                      MessageToast.show("new game started",{duration: 3000,width:"15rem"});
                     } catch (err) {
                       throw err
                     }
@@ -82,15 +82,17 @@ sap.ui.define([
 				// FIXME: REQUIRED 3 
 				// check onClick function for every room button
 				// Get the selected item id for wapen, dader, kamer
+				
+				
 				const answer = {
 					"wapen": {
-						"id": "" 
+						"id": this.getView().byId("wapen").getSelectedItem().getText()
 					},
 					"dader": {
-						"id": "" 
+						"id": this.getView().byId("dader").getSelectedItem().getText()
 					},
 					"kamer": {
-						"id": "" 
+						"id": this.getView().byId("kamer").getValue()
 					}
 				}
 				const oData = {
@@ -225,55 +227,66 @@ sap.ui.define([
 				// Set the correct room in dropdown
 				const selected = [1, 0, 0, 0, 0, 0, 0, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Balzaal");
 			},
 
 			onBibliotheekPress: function () {
 				// FIXME: REQUIRED 3.2
 				// Set the correct room in dropdown
-				const selected = [1, 0, 0, 0, 0, 0, 0, 0, 0];
+				const selected = [0, 1, 0, 0, 0, 0, 0, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Bibliotheek");
+				
+				
 			},
 			onBiljartkamerPress: function () {
 				// FIXME: REQUIRED 3.3
 				// Set the correct room in dropdown
-				const selected = [0, 1, 0, 0, 0, 0, 0, 0, 0];
+				const selected = [0, 0, 1, 0, 0, 0, 0, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Biljartkamer");
 			},
 			onEetkamerPress: function () {
 				// FIXME: REQUIRED 3.4
 				// Set the correct room in dropdown
-				const selected = [0, 0, 1, 0, 0, 0, 0, 0, 0];
+				const selected = [0, 0, 0, 1, 0, 0, 0, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Eetkamer");
 			},
 			onHalPress: function () {
 				// FIXME: REQUIRED 3.5
 				// Set the correct room in dropdown
-				const selected = [0, 0, 0, 1, 0, 0, 0, 0, 0];
+				const selected = [0, 0, 0, 0, 1, 0, 0, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Hal");
 			},
 			onKeukenPress: function () {
 				// FIXME: REQUIRED 3.6
 				// Set the correct room in dropdown
 				const selected = [, 0, 0, 0, 0, 1, 0, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Keuken");
 			},
 			onSerrePress: function () {
 				// FIXME: REQUIRED 3.7
 				// Set the correct room in dropdown
 				const selected = [0, 0, 0, 0, 0, 0, 1, 0, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Serre");
 			},
 			onStudeerkamerPress: function () {
 				// FIXME: REQUIRED 3.8
 				// Set the correct room in dropdown
 				const selected = [0, 0, 0, 0, 0, 0, 0, 1, 0];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Studeerkamer");
 			},
 			onZitkamerPress: function () {
 				// FIXME: REQUIRED 3.9
 				// Set the correct room in dropdown
 				const selected = [0, 0, 0, 0, 0, 0, 0, 0, 1];
 				this._setKamerButtonSelected(selected);
+				this.getView().byId("kamer").setValue("Zitkamer");
 			},
 
 			_buildPlayground: function () {
