@@ -160,12 +160,25 @@ async function _makeGuess(roomsUsed){
 function _checkData(currentAnswer){
     let rawdata = fs.readFileSync('gamedata/solution.json').toString();
     var solution = JSON.parse(rawdata);
+    let wapenBool = false
+    let daderBool = false
+    let kamerBool = false
     // FIXME: REQUIRED 3
     // Check object with existing (!) check functions. Return value should be true || false
+    if (solution.wapen.name == currentAnswer.wapen.id) {
+          wapenBool = true  
+    }
+    if (solution.dader.name == currentAnswer.dader.id) {
+        daderBool = true  
+  }
+  if (solution.kamer.name == currentAnswer.kamer.id) {
+    kamerBool = true  
+}
     return {
-        wapen: "",
-        dader: "",
-        kamer: ""
+        
+        wapen: wapenBool,
+        dader: daderBool,
+        kamer: kamerBool
     };
 }
 
@@ -173,6 +186,23 @@ function _writeGuess(currentAnswer, filePath){
     // FIXME: REQUIRED 4
     // Read content of file (filepath). Add current guess, then write the adjusted content to (filepath).
     // Tip: use 'fs'
+    var data = fs.readFileSync(filePath);
+    var myObject = JSON.parse(data);
+      
+      
+    // Adding the new data to our object
+    myObject.push(currentAnswer)
+      
+    // Writing to our JSON file
+    var newData2 = JSON.stringify(myObject);
+    fs.writeFile("data2.json", newData2, (err) => {
+      // Error checking
+      if (err) throw err;
+      console.log("New data added");
+    });
+    
+
+    
 }
 
 function _checkWapen(caWapen, soWapen){

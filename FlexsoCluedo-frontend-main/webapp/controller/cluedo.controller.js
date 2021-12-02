@@ -120,7 +120,9 @@ sap.ui.define([
 						this._displayPlayerGuesses(oData);
 						// FIXME: REQUIRED 4
 						// If the player won, show _endOfGameDialog
-						
+						if (oData.checks.player.dader && oData.checks.player.kamer && oData.checks.player.wapen) {
+							this._endOfGameDialog("someone won", "Do you want to restart?")
+						}
 						// KILLER
 						// TODO: BONUS
 						// Check if player died -> show _endOfGameDialog
@@ -141,7 +143,20 @@ sap.ui.define([
 			_endOfGameDialog: function (title, message) {
 				// FIXME: REQUIRED 5
 				// Show a dialog with restart button to inform the player.
-
+				var oDialog = new Dialog({
+					title: title,
+					DialogType: 'message',
+					content: new Text({text: message}),
+					buttons : [
+						new sap.m.Button({
+							text:"restart",
+							press: function(){
+								window.location.reload()
+							}
+						})
+					]
+				})
+				oDialog.open();
 				// TODO: BONUS
 				// Maybe add something creative?
 			},
