@@ -1,0 +1,298 @@
+<mvc:View
+	controllerName="com.flexso.htf2021.controller.cluedo"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	displayBlock="true"
+	xmlns="sap.m"
+>
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page
+					id="page"
+					title="{i18n>title}"
+					enableScrolling="true"
+				>
+					<content>
+						<HBox id="grondplannHBox">
+							<VBox>
+								<HBox>
+									<Button
+										id="balzaalButton"
+										text="{i18n>balzaal}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onBalzaalPress"
+										visible="false"
+									/>
+									<Button
+										id="bibliotheekButton"
+										text="{i18n>bibliotheek}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onBibliotheekPress"
+										visible= "false"
+									/>
+									<Button
+										id="biljartkamerButton"
+										text="{i18n>biljartkamer}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onBiljartkamerPress"
+										visible= "false"
+									/>
+									<Button
+										id="eetkamerButton"
+										text="{i18n>eetkamer}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onEetkamerPress"
+										visible= "false"
+									/>
+									<Button
+										id="halButton"
+										text="{i18n>hal}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onHalPress"
+										visible= "false"
+									/>
+									<Button
+										id="keukenButton"
+										text="{i18n>keuken}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onKeukenPress"
+										visible= "false"
+									/>
+									<Button
+										id="serreButton"
+										text="{i18n>serre}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onSerrePress"
+										visible= "false"
+									/>
+									<Button
+										id="studeerkamerButton"
+										text="{i18n>studeerkamer}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onStudeerkamerPress"
+										visible= "false"
+									/>
+									<Button
+										id="zitkamerButton"
+										text="{i18n>zitkamer}"
+										type="Reject"
+										class="sapUiTinyMargin"
+										press="onZitkamerPress"
+										visible= "false"
+									/>
+								</HBox>
+								
+								<Image
+									id="grondplanImg"
+									width="100%"
+									visible= "false"
+								/>
+							</VBox>
+							<VBox id="controlVBox" alignItems="Start">
+								<HBox id="botKillerHBox">
+									<VBox>
+										<Label text="{i18n>startQuestion}" class="sapUiTinyMargin"/>
+										<HBox>
+											<Label text="{i18n>addBots}" class="sapUiSmallMargin"/>
+											<Slider id="amountBots" min="0" max="4" enableTickmarks="true" >
+												<ResponsiveScale tickmarksBetweenLabels="1"/>
+											</Slider>
+										</HBox>
+										<HBox>
+											<Label text="{i18n>addKiller}" class="sapUiSmallMargin"/>
+											<Switch id="playWithKiller" type="AcceptReject" >
+												<layoutData>
+													<FlexItemData growFactor="1" />
+												</layoutData>
+											</Switch>
+										</HBox>
+										<HBox>
+											<Button
+												id="start"
+												activeIcon=""
+												icon="sap-icon://begin"
+												text="{i18n>startButton}"
+												type="Accept"
+												width="210px"
+												press="onStartPress"
+												class="sapUiTinyMargin"
+											/>
+										</HBox>
+										<Image
+											id= "startImage"
+											width = "65%"
+										/>
+									</VBox>
+								</HBox>
+								<HBox id="wapenHBox">
+									<ComboBox
+										id="wapen"
+										visible= "false"
+										width= "210px"
+										maxWidth="650px"
+										class="sapUiTinyMargin"
+										change="changeWapenImage"
+										items="{
+											path: 'cluedoData>/wapens',
+											sorter: { path: 'id' }
+										}">
+											<core:ListItem key="{cluedoData>id}" text="{cluedoData>name}"/>
+									</ComboBox>
+									<core:Icon 
+										id="wapenIcon"
+										class="size1 iconMarginTop">
+									</core:Icon>
+									<Image
+										id= "wapenImage"
+										width = "50px"
+									/>
+								</HBox>
+								<HBox id="daderHBox">
+									<ComboBox
+										id="dader"
+										visible= "false"
+										width= "210px"
+										maxWidth="650px"
+										class="sapUiTinyMargin"
+										change=".changeDaderImage"
+										items="{
+											path: 'cluedoData>/daders'
+										}">
+										<items>
+											<core:Item key="{cluedoData>id}" text="{cluedoData>name}" />
+										</items>
+									</ComboBox>
+									<core:Icon 
+										id="daderIcon"
+										class="size1 iconMarginTop">
+									</core:Icon>
+									<Image
+									id= "daderImage"
+									width = "50px"
+								/>
+								</HBox>
+								
+								<HBox id="kamerHBox">
+									<ComboBox
+										id="kamer"
+										editable= "false"
+										visible= "false"
+										width= "210px"
+										maxWidth="650px"
+										class="sapUiTinyMargin"
+										items = "{path: 'cluedoData>/kamers'}"
+										>
+										<items>
+											<core:Item key="{cluedoData>id}" text="{cluedoData>name}" />
+										</items>
+									</ComboBox>
+									<core:Icon 
+										id="kamerIcon"
+										class="size1 iconMarginTop">
+									</core:Icon>
+									<Image
+									id= "kamerImage"
+									width = "50px"
+								/>
+								</HBox>
+								
+								<Button
+									id="valideer"
+									visible= "false"
+									activeIcon=""
+									icon="sap-icon://validate"
+									text="{i18n>valideerWaarden}"
+									width="210px"
+									press="onValidatePress"
+									class="sapUiTinyMargin"
+								/>
+								<HBox id="bot1HBox" visible="false">
+									<Label text="Bot 1: " class="sapUiTinyMargin"/>
+									<core:Icon 
+										id="bot1WapenIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot1DaderIcon"
+										src="sap-icon://accept"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot1KamerIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+								</HBox>
+								<HBox id="bot2HBox" visible="false">
+									<Label text="Bot 2: " class="sapUiTinyMargin"/>
+									<core:Icon 
+										id="bot2WapenIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot2DaderIcon"
+										src="sap-icon://accept"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot2KamerIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+								</HBox>
+								<HBox id="bot3HBox" visible="false">
+									<Label text="Bot 3: " class="sapUiTinyMargin"/>
+									<core:Icon 
+										id="bot3WapenIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot3DaderIcon"
+										src="sap-icon://accept"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot3KamerIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+								</HBox>
+								<!-- Waardes bot 4-->
+								<HBox id="bot4HBox" visible="false">
+									<Label text="Bot 4: " class="sapUiTinyMargin"/>
+									<core:Icon 
+										id="bot4WapenIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot4DaderIcon"
+										src="sap-icon://accept"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+									<core:Icon 
+										id="bot4KamerIcon"
+										src="sap-icon://decline"
+										class="size1 sapUiTinyMargin">
+									</core:Icon>
+								</HBox>
+							</VBox>
+						</HBox>
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
