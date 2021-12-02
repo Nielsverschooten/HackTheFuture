@@ -20,16 +20,24 @@ sap.ui.define([
 		var botStatuses = [true, true, true, true];
 		const dataBaseUrl = "https://htf-2021.herokuapp.com";
 		const localBaseUrl = "http://localhost:3000";
-
-		const https = require('https');
 		return Controller.extend("com.flexso.htf2021.controller.cluedo", {
 			onInit: function () {
 				//FIXME: REQUIRED 1
 				// Load data from const localBaseUrl + "/data" into JSONModel named "cluedoModel" and make it available for the View
 				// After data call success, set image source from model data ("startImage" -> Title HTF, "grondplanImg" -> Grondplan Spel)
-				https.get(localBaseUrl+"/data",res=>{
-					const cluedoModel = res;
-				})
+			
+				(async () => {
+                    try {
+                      const res = await fetch(localBaseUrl + "/data")
+                      const cluedoModel = await res.json()
+                      console.log(cluedoModel);
+					  await this.getView().byId("startImage").setProperty( "src" , cluedoModel.others.url)
+					  await this.getView().byId("grondplanImg").setProperty( "src" , cluedoModel.grondplannen[1].url)
+                    } catch (err) {
+                      throw err
+                    }
+
+                  })()
 			},
 
 			
@@ -37,6 +45,7 @@ sap.ui.define([
 				// FIXME: REQUIRED 2
 				// Create new solution to start game using const localBaseUrl + "/new_solution" call
 				// When the solution has been created, call _buildPlayground function & show MessageToast (or something creative) when solution has been created
+				
 			},
 
 			
