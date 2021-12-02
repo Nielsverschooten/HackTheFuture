@@ -5,6 +5,7 @@ var jsonParser = bodyParser.json();
 const { default: axios } = require('axios');
 const fs = require('fs');
 const { callbackify } = require('util');
+const { response } = require('express');
 const ROUNDS_KILLER_INACTIVE = 5;
 
 app.use(express.urlencoded());
@@ -18,6 +19,10 @@ app.use((req, res, next) => {
 app.get('/data', function (req, res) {
     // FIXME: REQUIRED 1
     // Get gamedata from "https://htf-2021.herokuapp.com/testdata.json" using axios and send data to frontend
+    axios.get("https://htf-2021.herokuapp.com/testdata.json").then(response =>{
+        res.send(response.data);
+     
+    })
 });
 
 app.post('/new_solution', async function (req, res) {

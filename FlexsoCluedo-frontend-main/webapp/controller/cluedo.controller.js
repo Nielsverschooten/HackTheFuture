@@ -20,11 +20,16 @@ sap.ui.define([
 		var botStatuses = [true, true, true, true];
 		const dataBaseUrl = "https://htf-2021.herokuapp.com";
 		const localBaseUrl = "http://localhost:3000";
+
+		const https = require('https');
 		return Controller.extend("com.flexso.htf2021.controller.cluedo", {
 			onInit: function () {
 				//FIXME: REQUIRED 1
 				// Load data from const localBaseUrl + "/data" into JSONModel named "cluedoModel" and make it available for the View
 				// After data call success, set image source from model data ("startImage" -> Title HTF, "grondplanImg" -> Grondplan Spel)
+				https.get(localBaseUrl+"/data",res=>{
+					const cluedoModel = res;
+				})
 			},
 
 			
