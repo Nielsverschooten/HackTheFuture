@@ -94,10 +94,13 @@ async function _createSolution(){
     var oData = resp.data;
     // FIXME: REQUIRED 2
     // Get random objects from oData by using random generator (_getRandomInt)
+    var wapen = oData.wapens[_getRandomInt(oData.wapens.length)]
+    var dader = oData.daders[_getRandomInt(oData.daders.length)]
+    var kamer = oData.kamers[_getRandomInt(oData.kamers.length)]
     return {
-        "wapen": "",
-        "dader": "",
-        "kamer": ""
+        "wapen": wapen,
+        "dader": dader,
+        "kamer": kamer
     }
 }
 

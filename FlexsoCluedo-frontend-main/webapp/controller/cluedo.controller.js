@@ -31,8 +31,8 @@ sap.ui.define([
                       const res = await fetch(localBaseUrl + "/data")
                       const cluedoModel = await res.json()
                       console.log(cluedoModel);
-					  await this.getView().byId("startImage").setProperty( "src" , cluedoModel.others.url)
-					  await this.getView().byId("grondplanImg").setProperty( "src" , cluedoModel.grondplannen[1].url)
+					  await this.getView().byId("startImage").setProperty( "src" ,dataBaseUrl+cluedoModel.others.url+"").setVisible(true)
+					  await this.getView().byId("grondplanImg").setProperty( "src" ,dataBaseUrl+cluedoModel.grondplannen[1].url+"").setVisible(true)
                     } catch (err) {
                       throw err
                     }
@@ -45,7 +45,17 @@ sap.ui.define([
 				// FIXME: REQUIRED 2
 				// Create new solution to start game using const localBaseUrl + "/new_solution" call
 				// When the solution has been created, call _buildPlayground function & show MessageToast (or something creative) when solution has been created
-				
+				(async () => {
+                    try {
+                    const res = await fetch(localBaseUrl + "/new_solution", {method: 'POST'})
+                      .then(res => res.json())
+                      console.log('Success:', res);
+                      _buildPlayground();
+                      MessageToast();
+                    } catch (err) {
+                      throw err
+                    }
+                  })()
 			},
 
 			
